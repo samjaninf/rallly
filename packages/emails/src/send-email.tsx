@@ -19,6 +19,9 @@ const env = process.env["NODE" + "_ENV"] || "development";
 let transport: Transporter;
 
 const getTransport = () => {
+  if (transport) {
+    return transport;
+  }
   if (env === "test") {
     transport = createTransport({ port: 4025 });
   } else {
