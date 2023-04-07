@@ -2,8 +2,10 @@ import { prisma } from "@rallly/database";
 import { z } from "zod";
 
 import { publicProcedure, router } from "../trpc";
+import { preferences } from "./user/preferences";
 
 export const user = router({
+  preferences,
   getPolls: publicProcedure.query(async ({ ctx }) => {
     const userPolls = await prisma.user.findUnique({
       where: {

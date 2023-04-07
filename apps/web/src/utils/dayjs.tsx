@@ -1,4 +1,4 @@
-import dayjs from "dayjs";
+import dayjs, { locale } from "dayjs";
 import duration from "dayjs/plugin/duration";
 import isBetween from "dayjs/plugin/isBetween";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
@@ -18,7 +18,7 @@ import { useRequiredContext } from "../components/use-required-context";
 export type TimeFormat = "12h" | "24h";
 export type StartOfWeek = "monday" | "sunday";
 
-const dayjsLocales: Record<
+export const dayjsLocales: Record<
   string,
   {
     weekStartsOn: StartOfWeek;
@@ -145,7 +145,7 @@ dayjs.extend(duration);
 dayjs.extend(isSameOrAfter);
 
 const DayjsContext = React.createContext<{
-  dayjs: (date?: dayjs.ConfigType) => dayjs.Dayjs;
+  dayjs: typeof dayjs;
   weekStartsOn: StartOfWeek;
   timeFormat: TimeFormat;
   setWeekStartsOn: React.Dispatch<

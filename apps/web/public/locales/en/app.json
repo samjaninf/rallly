@@ -1,4 +1,5 @@
 {
+  "reset": "Reset",
   "12h": "12-hour",
   "24h": "24-hour",
   "addTimeOption": "Add time option",
@@ -62,6 +63,7 @@
   "hide": "Hide",
   "home": "Home",
   "ifNeedBe": "If need be",
+  "language": "Language",
   "loading": "Loading…",
   "loadingParticipants": "Loading participants…",
   "location": "Location",

@@ -1,8 +1,13 @@
 import { sealData, unsealData } from "iron-session";
 
 import { sessionConfig } from "./session-config";
+import { UserPreferences } from "./trpc/types";
 
-type UserSessionData = { id: string; isGuest: boolean };
+type UserSessionData = {
+  id: string;
+  isGuest: boolean;
+  preferences?: Partial<UserPreferences>;
+};
 
 declare module "iron-session" {
   export interface IronSessionData {

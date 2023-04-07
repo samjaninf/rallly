@@ -1,3 +1,5 @@
+export type { UserPreferences } from "./routers/user/preferences";
+
 export type RegistrationTokenPayload = {
   name: string;
   email: string;
@@ -27,3 +29,5 @@ export type GuestUserSession = {
 };
 
 export type UserSession = GuestUserSession | RegisteredUserSession;
+
+export type UserRole = "participant" | "admin";

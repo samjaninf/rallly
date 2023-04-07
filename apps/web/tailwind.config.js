@@ -3,7 +3,11 @@ const sharedConfig = require("@rallly/tailwind-config/tailwind.config");
 
 module.exports = {
   ...sharedConfig,
-  content: ["./src/pages/**/*.{ts,tsx}", "./src/components/**/*.{ts,tsx}"],
+  content: [
+    "./src/pages/**/*.{ts,tsx}",
+    "./src/components/**/*.{ts,tsx}",
+    "./src/ui/**/*.{ts,tsx}",
+  ],
   theme: {
     ...sharedConfig.theme,
     fontFamily: {

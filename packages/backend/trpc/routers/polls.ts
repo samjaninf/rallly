@@ -9,6 +9,7 @@ import { nanoid } from "../../utils/nanoid";
 import { possiblyPublicProcedure, publicProcedure, router } from "../trpc";
 import { comments } from "./polls/comments";
 import { demo } from "./polls/demo";
+import { options } from "./polls/options";
 import { participants } from "./polls/participants";
 
 const getPollIdFromAdminUrlId = async (urlId: string) => {
@@ -224,6 +225,7 @@ export const polls = router({
   demo,
   participants,
   comments,
+  options,
   // END LEGACY ROUTES
   watch: possiblyPublicProcedure
     .input(z.object({ pollId: z.string() }))
@@ -375,5 +377,67 @@ export const polls = router({
       } else {
         return { ...res, adminUrlId: "" };
       }
+    }),
+  get: publicProcedure
+    .input(
+      z.object({
+        pollId: z.string(),
+      }),
+    )
+    .query(async ({ input }) => {
+      const res = await prisma.poll.findUnique({
+        select: {
+          id: true,
+          timeZone: true,
+          title: true,
+          location: true,
+          description: true,
+          createdAt: true,
+          participantUrlId: true,
+          closed: true,
+          user: true,
+          userId: true,
+          deleted: true,
+        },
+        where: {
+          id: input.pollId,
+        },
+      });
+
+      if (!res) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Poll not found",
+        });
+      }
+
+      return res;
+    }),
+  exchangeId: publicProcedure
+    .input(
+      z.object({
+        urlId: z.string(),
+        role: z.enum(["admin", "participant"]),
+      }),
+    )
+    .query(async ({ input }) => {
+      const poll = await prisma.poll.findUnique({
+        select: {
+          id: true,
+        },
+        where:
+          input.role === "admin"
+            ? { adminUrlId: input.urlId }
+            : { participantUrlId: input.urlId },
+      });
+
+      if (!poll) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Poll not found",
+        });
+      }
+
+      return poll.id;
     }),
 });
