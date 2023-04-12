@@ -1,41 +1,41 @@
 import { withSessionSsr } from "@rallly/backend/next";
-import { GetServerSideProps, NextPage } from "next";
+import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import React from "react";
 
-import { AuthLayout } from "@/components/auth/auth-layout";
+import { getAuthLayout } from "@/components/auth/auth-layout";
 import { LoginForm } from "@/components/auth/login-form";
-import { useUser, withSession } from "@/components/user-provider";
+import { NextPageWithLayout } from "@/types";
 
 import { withPageTranslations } from "../utils/with-page-translations";
 
-const Page: NextPage<{ referer: string | null }> = () => {
+const Page: NextPageWithLayout<{ referer: string | null }> = () => {
   const { t } = useTranslation("app");
-  const router = useRouter();
-  const { refresh } = useUser();
 
+  const router = useRouter();
   return (
-    <AuthLayout>
+    <>
       <Head>
         <title>{t("login")}</title>
       </Head>
       <LoginForm
         onAuthenticated={async () => {
-          refresh();
-          router.replace("/profile");
+          router.replace("/polls");
         }}
       />
-    </AuthLayout>
+    </>
   );
 };
+
+Page.getLayout = getAuthLayout;
 
 export const getServerSideProps: GetServerSideProps = withSessionSsr(
   async (ctx) => {
     if (ctx.req.session.user?.isGuest === false) {
       return {
-        redirect: { destination: "/profile" },
+        redirect: { destination: "/polls" },
         props: {},
       };
     }
@@ -44,4 +44,4 @@ export const getServerSideProps: GetServerSideProps = withSessionSsr(
   },
 );
 
-export default withSession(Page);
+export default Page;

@@ -1,10 +1,11 @@
 import { withAuthIfRequired, withSessionSsr } from "@rallly/backend/next";
+import { ChartSquareBarIcon } from "@rallly/icons";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { useTranslation } from "next-i18next";
 
-import FullPageLoader from "@/components/full-page-loader";
 import { getStandardLayout } from "@/components/layouts/standard-layout";
+import { Breadcrumbs } from "@/components/layouts/standard-layout/breadcrumbs";
 import { ParticipantsProvider } from "@/components/participants-provider";
 import { Poll } from "@/components/poll";
 import { PollContextProvider } from "@/components/poll-context";
@@ -18,33 +19,35 @@ import { NextPageWithLayout } from "../../types";
 const Page: NextPageWithLayout<{ urlId: string }> = ({ urlId }) => {
   const { t } = useTranslation("app");
 
-  const pollQuery = usePollByAdmin();
+  const { data: poll } = usePollByAdmin();
 
-  const poll = pollQuery.data;
-
-  if (poll) {
-    return (
-      <>
-        <Head>
-          <title>{t("adminPollTitle", { title: poll.title })}</title>
-          <meta name="robots" content="noindex,nofollow" />
-        </Head>
-        <ParticipantsProvider pollId={poll.id}>
-          <PollContextProvider poll={poll} urlId={urlId} admin={true}>
-            <ModalProvider>
-              <div className="flex flex-col space-y-3 p-3 sm:space-y-4 sm:p-4">
-                <AdminControls>
-                  <Poll />
-                </AdminControls>
-              </div>
-            </ModalProvider>
-          </PollContextProvider>
-        </ParticipantsProvider>
-      </>
-    );
+  if (!poll) {
+    return null;
   }
 
-  return <FullPageLoader>{t("loading")}</FullPageLoader>;
+  return (
+    <>
+      <Head>
+        <title>{t("adminPollTitle", { title: poll.title })}</title>
+        <meta name="robots" content="noindex,nofollow" />
+      </Head>
+      <ParticipantsProvider pollId={poll.id}>
+        <PollContextProvider poll={poll} urlId={urlId} admin={true}>
+          <ModalProvider>
+            <Breadcrumbs
+              title={poll.title}
+              icon={ChartSquareBarIcon}
+              showBackButton={true}
+              pageControls={<AdminControls />}
+            />
+            <div className="space-y-3 p-3 sm:space-y-4 sm:p-4">
+              <Poll />
+            </div>
+          </ModalProvider>
+        </PollContextProvider>
+      </ParticipantsProvider>
+    </>
+  );
 };
 
 Page.getLayout = getStandardLayout;

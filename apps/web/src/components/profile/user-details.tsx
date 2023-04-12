@@ -4,6 +4,7 @@ import { useTranslation } from "next-i18next";
 import * as React from "react";
 import { useForm } from "react-hook-form";
 
+import { useUser } from "@/components/user-provider";
 import { usePostHog } from "@/utils/posthog";
 
 import { requiredString, validEmail } from "../../utils/form-validation";
@@ -15,8 +16,6 @@ export interface UserDetailsProps {
   name?: string;
   email?: string;
 }
-
-const MotionButton = m(Button);
 
 export const UserDetails: React.FunctionComponent<UserDetailsProps> = ({
   userId,
@@ -30,12 +29,14 @@ export const UserDetails: React.FunctionComponent<UserDetailsProps> = ({
   }>({
     defaultValues: { name, email },
   });
+  const { refresh } = useUser();
 
   const posthog = usePostHog();
 
   const changeName = trpc.user.changeName.useMutation({
     onSuccess: (_, { name }) => {
       reset({ name, email });
+      refresh();
       posthog?.people.set({ name });
     },
   });
@@ -43,35 +44,22 @@ export const UserDetails: React.FunctionComponent<UserDetailsProps> = ({
   const { dirtyFields } = formState;
   return (
     <form
+      className="p-4"
       onSubmit={handleSubmit(async (data) => {
         if (dirtyFields.name) {
           await changeName.mutateAsync({ userId, name: data.name });
         }
       })}
     >
-      <div className="flex items-center justify-between border-b px-3 py-2 shadow-sm">
-        <div className="font-semibold text-slate-700 ">{t("yourDetails")}</div>
-        <MotionButton
-          variants={{
-            hidden: { opacity: 0, x: 10 },
-            visible: { opacity: 1, x: 0 },
-          }}
-          transition={{ duration: 0.1 }}
-          initial="hidden"
-          animate={formState.isDirty ? "visible" : "hidden"}
-          htmlType="submit"
-          loading={formState.isSubmitting}
-          type="primary"
-        >
-          {t("save")}
-        </MotionButton>
+      <div className="flex justify-between">
+        <h2 className="mb-4 font-semibold">{t("myDetails")}</h2>
       </div>
-      <div className="divide-y">
-        <div className="flex p-4 pr-8">
+      <div className="space-y-4">
+        <div className="">
           <label htmlFor="name" className="mb-1 w-1/3 text-slate-500">
             {t("name")}
           </label>
-          <div className="w-2/3">
+          <div className="">
             <TextInput
               id="name"
               className="input w-full"
@@ -89,11 +77,11 @@ export const UserDetails: React.FunctionComponent<UserDetailsProps> = ({
             ) : null}
           </div>
         </div>
-        <div className="flex p-4 pr-8">
+        <div className="">
           <label htmlFor="random-8904" className="mb-1 w-1/3 text-slate-500">
             {t("email")}
           </label>
-          <div className="w-2/3">
+          <div className="">
             <TextInput
               id="random-8904"
               className="input w-full"
@@ -102,6 +90,16 @@ export const UserDetails: React.FunctionComponent<UserDetailsProps> = ({
               {...register("email", { validate: validEmail })}
             />
           </div>
+        </div>
+        <div className="flex">
+          <Button
+            htmlType="submit"
+            disabled={!formState.isDirty}
+            loading={formState.isSubmitting}
+            type="primary"
+          >
+            {t("save")}
+          </Button>
         </div>
       </div>
     </form>

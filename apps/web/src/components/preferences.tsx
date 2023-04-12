@@ -3,6 +3,8 @@ import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import React from "react";
 
+import { Button } from "@/components/button";
+
 import { useDayjs } from "../utils/dayjs";
 import { LanguageSelect } from "./poll/language-selector";
 
@@ -27,7 +29,7 @@ const Preferences = (props: { className?: string }) => {
             {t("app:weekStartsOn")}
           </div>
           <div>
-            <div className="segment-button inline-flex">
+            <div className="segment-button">
               <button
                 className={clsx({
                   "segment-button-active": weekStartsOn === "monday",
@@ -57,7 +59,7 @@ const Preferences = (props: { className?: string }) => {
           <div className="mb-2 grow text-sm text-slate-500">
             {t("app:timeFormat")}
           </div>
-          <div className="segment-button inline-flex">
+          <div className="segment-button">
             <button
               className={clsx({
                 "segment-button-active": timeFormat === "12h",
@@ -82,6 +84,9 @@ const Preferences = (props: { className?: string }) => {
             </button>
           </div>
         </div>
+      </div>
+      <div className="mt-4">
+        <Button type="primary">{t("app:save")}</Button>
       </div>
     </div>
   );

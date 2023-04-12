@@ -1,6 +1,8 @@
 import React from "react";
 
-import Logo from "~//logo.svg";
+import StandardLayout from "@/components/layouts/standard-layout";
+import { NextPageWithLayout } from "@/types";
+import Logo from "~/logo.svg";
 
 export const AuthLayout = ({ children }: { children?: React.ReactNode }) => {
   return (
@@ -16,3 +18,12 @@ export const AuthLayout = ({ children }: { children?: React.ReactNode }) => {
     </div>
   );
 };
+
+export const getAuthLayout: NextPageWithLayout["getLayout"] =
+  function getLayout(page) {
+    return (
+      <StandardLayout>
+        <AuthLayout>{page}</AuthLayout>
+      </StandardLayout>
+    );
+  };

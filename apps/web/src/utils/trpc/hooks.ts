@@ -6,9 +6,5 @@ export const usePollByAdmin = () => {
   const adminUrlId = router.query.urlId as string;
   const pollQuery = trpc.polls.getByAdminUrlId.useQuery({ urlId: adminUrlId });
 
-  if (!pollQuery.data) {
-    throw new Error("Poll not found");
-  }
-
-  return pollQuery;
+  return { ...pollQuery, data: pollQuery.data! };
 };

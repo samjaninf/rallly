@@ -1,9 +1,11 @@
 import { withAuthIfRequired, withSessionSsr } from "@rallly/backend/next";
+import { CalendarIcon } from "@rallly/icons";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { useTranslation } from "react-i18next";
 
 import CreatePoll from "@/components/create-poll";
+import { Breadcrumbs } from "@/components/layouts/standard-layout/breadcrumbs";
 
 import StandardLayout from "../components/layouts/standard-layout";
 import { NextPageWithLayout } from "../types";
@@ -17,6 +19,11 @@ const Page: NextPageWithLayout = () => {
         <title>{t("createNew")}</title>
         <meta name="robots" content="noindex,nofollow" />
       </Head>
+      <Breadcrumbs
+        showBackButton={true}
+        title={t("newPoll")}
+        icon={CalendarIcon}
+      />
       <CreatePoll />
     </>
   );

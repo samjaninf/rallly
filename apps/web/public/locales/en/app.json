@@ -1,4 +1,7 @@
 {
+  "myPolls": "My Polls",
+  "profile": "Profile",
+  "myDetails": "My Details",
   "12h": "12-hour",
   "24h": "24-hour",
   "addTimeOption": "Add time option",

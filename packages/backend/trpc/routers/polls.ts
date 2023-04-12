@@ -376,4 +376,32 @@ export const polls = router({
         return { ...res, adminUrlId: "" };
       }
     }),
+  list: possiblyPublicProcedure.query(async ({ ctx }) => {
+    return await prisma.poll.findMany({
+      where: {
+        userId: ctx.user.id,
+      },
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        participants: {
+          select: {
+            name: true,
+          },
+        },
+        comments: {
+          select: {
+            id: true,
+          },
+        },
+        createdAt: true,
+        closed: true,
+        adminUrlId: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+  }),
 });

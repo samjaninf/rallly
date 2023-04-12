@@ -1,15 +1,15 @@
 import { withSessionSsr } from "@rallly/backend/next";
-import { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 
+import { NextPageWithLayout } from "@/types";
+
 import { AuthLayout } from "../components/auth/auth-layout";
 import { RegisterForm } from "../components/auth/login-form";
-import { withSession } from "../components/user-provider";
 import { withPageTranslations } from "../utils/with-page-translations";
 
-const Page: NextPage = () => {
+const Page: NextPageWithLayout = () => {
   const { t } = useTranslation("app");
   const router = useRouter();
   return (
@@ -30,4 +30,4 @@ export const getServerSideProps = withSessionSsr(
   withPageTranslations(["common", "app"]),
 );
 
-export default withSession(Page);
+export default Page;
