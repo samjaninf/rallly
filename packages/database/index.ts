@@ -1,8 +1,8 @@
-import { PrismaClient } from "@rallly/database";
+import { PrismaClient } from "@prisma/client/edge";
 
 import { softDeleteMiddleware } from "./middleware/soft-delete-middleware";
 
-export * from "@prisma/client";
+export * from "@prisma/client/edge";
 
 declare global {
   // allow global `var` declarations
