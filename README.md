@@ -1,6 +1,8 @@
-<img src="./assets/images/logo.png" alt="Rallly" />
+<img src="./assets/images/logo-color.svg" width="150px" alt="Rallly" />
+<br />
+<br />
 
-<div align="center">
+<div>
 
 [![Actions Status](https://github.com/lukevella/rallly/workflows/ci/badge.svg?branch=main)](https://github.com/lukevella/rallly/actions)
 [![Crowdin](https://badges.crowdin.net/rallly/localized.svg)](https://crowdin.com/project/rallly)
@@ -10,15 +12,11 @@
 
 </div>
 
+<img src="./assets/images/splash.png" alt="Rallly" />
+<br /><br />
 Schedule group meetings with friends, colleagues and teams. Create meeting polls to find the best date and time to organize an event based on your participants' availability. Save time and avoid back-and-forth emails.
 
 Built with [Next.js](https://github.com/vercel/next.js/), [Prisma](https://github.com/prisma/prisma), [tRPC](https://github.com/trpc/trpc) & [TailwindCSS](https://github.com/tailwindlabs/tailwindcss)
-
-<div align="center">
-
-<img src="./assets/images/poll-image.png" alt="Rallly"  />
-
-</div>
 
 ## Self-hosting
 
