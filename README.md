@@ -1,9 +1,12 @@
-<img src="./assets/images/logo-color.svg" width="150px" alt="Rallly" />
-<br />
-<br />
 
-<div>
+<div align="center">
+  
+<img src="./assets/images/logo-color.svg" width="200px" alt="Rallly" />
 
+</div>
+<br />
+<div align="center">
+  
 [![Actions Status](https://github.com/lukevella/rallly/workflows/ci/badge.svg?branch=main)](https://github.com/lukevella/rallly/actions)
 [![Crowdin](https://badges.crowdin.net/rallly/localized.svg)](https://crowdin.com/project/rallly)
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-orange.svg)](https://www.gnu.org/licenses/agpl-3.0)
