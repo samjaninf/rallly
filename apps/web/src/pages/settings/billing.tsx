@@ -15,6 +15,7 @@ import { SettingsSection } from "@/components/settings/settings-section";
 import { Trans } from "@/components/trans";
 import { useUser } from "@/components/user-provider";
 import { usePlan } from "@/contexts/plan";
+import { isSelfHosted } from "@/utils/constants";
 
 import { NextPageWithLayout } from "../../types";
 import { getStaticTranslations } from "../../utils/with-page-translations";
@@ -167,14 +168,9 @@ const BillingStatus = () => {
   );
 };
 
-const Page: NextPageWithLayout = () => {
-  const { t } = useTranslation();
-
+const BillingPage = () => {
   return (
     <div className="divide-y">
-      <Head>
-        <title>{t("billing")}</title>
-      </Head>
       <Script
         src="https://cdn.paddle.com/paddle/paddle.js"
         onLoad={() => {
@@ -198,6 +194,28 @@ const Page: NextPageWithLayout = () => {
         <SubscriptionStatus />
       </SettingsSection>
     </div>
+  );
+};
+
+const Page: NextPageWithLayout = () => {
+  const { t } = useTranslation();
+
+  return (
+    <>
+      <Head>
+        <title>{t("billing")}</title>
+      </Head>
+      {isSelfHosted ? (
+        <div className="text-muted-foreground flex h-96 items-center justify-center text-sm">
+          <Trans
+            i18nKey="billingDisabled"
+            defaults="Billing has been disabled"
+          />
+        </div>
+      ) : (
+        <BillingPage />
+      )}
+    </>
   );
 };
 

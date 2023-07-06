@@ -16,7 +16,7 @@ export async function middleware(req: NextRequest) {
   const res = NextResponse.next();
   const session = await getSession(req, res);
   if (
-    process.env.AUTH_REQUIRED &&
+    process.env.NEXT_PUBLIC_SELF_HOSTED === "true" &&
     session.user?.isGuest !== false &&
     !publicPaths.some((publicPath) =>
       req.nextUrl.pathname.startsWith(publicPath),

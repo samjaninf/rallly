@@ -1,4 +1,3 @@
-import { trpc } from "@rallly/backend";
 import {
   ChevronDown,
   CreditCardIcon,
@@ -26,16 +25,12 @@ import Link from "next/link";
 
 import { Trans } from "@/components/trans";
 import { CurrentUserAvatar } from "@/components/user";
+import { usePlan } from "@/contexts/plan";
 
 import { IfAuthenticated, IfGuest, useUser } from "./user-provider";
 
 const Plan = () => {
-  const { isFetched, data } = trpc.user.getBilling.useQuery();
-  if (!isFetched) {
-    return null;
-  }
-
-  const isPlus = data && data.endDate.getTime() > Date.now();
+  const isPlus = usePlan() === "paid";
 
   if (isPlus) {
     return (
