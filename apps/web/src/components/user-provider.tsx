@@ -61,21 +61,27 @@ export const UserProvider = (props: { children?: React.ReactNode }) => {
   const session = useSession({
     required: true,
     onUnauthenticated() {
-      // Begin: Legacy token migration
-      const legacyToken = Cookies.get("legacy-token");
-      // It's important to remove the token from the cookies,
-      // otherwise when the user signs out.
-      if (legacyToken) {
-        Cookies.remove("legacy-token");
-        signIn("legacy-token", {
-          token: legacyToken,
-          redirect: false,
-        });
-      } else {
-        // End: Legacy token migration
-        signIn("guest", {
-          redirect: false,
-        });
+      try {
+        // Begin: Legacy token migration
+        const legacyToken = Cookies.get("legacy-token");
+        // It's important to remove the token from the cookies,
+        // otherwise when the user signs out.
+        if (legacyToken) {
+          Cookies.remove("legacy-token");
+          signIn("legacy-token", {
+            token: legacyToken,
+            redirect: false,
+          });
+        } else {
+          // End: Legacy token migration
+          signIn("guest", {
+            redirect: false,
+          });
+        }
+      } catch (e) {
+        // fetch fails in certain browsers (Mobile Safari) when the page reloads
+        // after opening a link from a different app.
+        console.error(e);
       }
     },
   });
