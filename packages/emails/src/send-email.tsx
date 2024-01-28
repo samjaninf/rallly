@@ -79,13 +79,15 @@ export class EmailClient {
     options: SendEmailOptions<T>,
   ) {
     const Template = templates[templateName] as TemplateComponent<T>;
-    const html = render(
+    const email = (
       <Template
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         {...(options.props as any)}
         ctx={this.config.context}
-      />,
+      />
     );
+    const html = render(email);
+    const text = render(email, { plainText: true });
 
     try {
       await this.sendEmail({
@@ -94,6 +96,7 @@ export class EmailClient {
         subject: options.subject,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         html,
+        text,
         attachments: options.attachments,
       });
     } catch (e) {
