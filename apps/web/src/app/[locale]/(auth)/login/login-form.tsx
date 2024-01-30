@@ -43,15 +43,6 @@ export function LoginForm() {
   const alternativeLoginMethods = React.useMemo(() => {
     const res: Array<{ login: () => void; icon: JSX.Element; name: string }> =
       [];
-    if (allowGuestAccess) {
-      res.push({
-        login: () => {
-          router.push(callbackUrl);
-        },
-        icon: <UserIcon className="text-muted-foreground size-5" />,
-        name: t("continueAsGuest"),
-      });
-    }
 
     if (providers?.oidc) {
       res.push({
@@ -78,6 +69,17 @@ export function LoginForm() {
         name: t("loginWith", { provider: providers.google.name }),
       });
     }
+
+    if (allowGuestAccess) {
+      res.push({
+        login: () => {
+          router.push(callbackUrl);
+        },
+        icon: <UserIcon className="text-muted-foreground size-5" />,
+        name: t("continueAsGuest"),
+      });
+    }
+
     return res;
   }, [callbackUrl, providers, router, t]);
 
@@ -148,7 +150,7 @@ export function LoginForm() {
           total: 2,
         })}
       </p>
-      <fieldset className="mb-4">
+      <fieldset className="mb-2.5">
         <label htmlFor="email" className="mb-1 text-gray-500">
           {t("email")}
         </label>
@@ -168,20 +170,22 @@ export function LoginForm() {
           </div>
         ) : null}
       </fieldset>
-      <div className="flex flex-col gap-2">
+      <div>
         <Button
           loading={formState.isSubmitting}
           type="submit"
           size="lg"
           variant="primary"
-          className=""
+          className="w-full"
         >
-          {t("continue")}
+          {t("loginWith", {
+            provider: t("email"),
+          })}
         </Button>
         {alternativeLoginMethods.length > 0 ? (
           <>
             <hr className="border-grey-500 my-4 border-t" />
-            <div className="grid gap-4">
+            <div className="grid gap-2.5">
               {alternativeLoginMethods.map((method, i) => (
                 <Button size="lg" key={i} onClick={method.login}>
                   {method.icon}
