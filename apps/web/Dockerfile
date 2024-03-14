@@ -30,6 +30,7 @@ FROM node:18-slim AS runner
 
 WORKDIR /app
 
+RUN apt-get update -y && apt-get install -y openssl
 RUN yarn global add prisma
 # Don't run production as root
 RUN addgroup --system --gid 1001 nodejs
